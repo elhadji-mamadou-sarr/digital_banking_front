@@ -1,0 +1,116 @@
+
+<app-dashboard></app-dashboard>
+
+<section class="dashboard" >
+
+  <div class="dash-content">
+        <div class="activity">
+
+          <div class="alert alert-danger" *ngIf="errorMessage">
+            <span> {{ errorMessage }}</span>
+          </div>
+
+          <div class="alert alert-success" *ngIf="succesMessage">
+            <span> {{ succesMessage }} </span>
+          </div>
+
+        <div class="title justify-content-between">
+
+          <div class="d-flex">
+            <i class="uil uil-clock-three"></i>
+            <span class="text">Liste des Clients</span>
+          </div>
+
+          <div class="button-add">
+            <a class="btn btn-primary fw-bold " (click)="openAddDialog(null)">+ Ajouter</a>
+          </div>
+
+        </div>
+
+        <div class="content">
+
+          <table class="table" >
+            <thead class="table-primary">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">email</th>
+                <th scope="col" class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td>{{ user.id }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <div class="d-flex float-end gap-3">
+                    <a class="btn btn-outline-primary btn-sm" (click)="openAddDialog(user)">modifier</a>
+                    <a class="btn btn-outline-primary btn-sm" (click)="deleteUser(user.id!)" >supprimer</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+
+      </div>
+
+</div>
+</section>
+
+
+<ng-template #addDialog>
+
+  <div class="m-4">
+
+    <h2> {{ selectedUser ? 'Modifier un client' : 'Ajouter un client' }}</h2>
+
+    <form (submit)="saveUser()" class="row g-3" novalidate>
+
+      <input type="hidden" name="id" [(ngModel)]="newUser.id">
+
+      <div class="col-md-6">
+        <label class="form-label"  for="validationCustom03">Nom d'utilisateur</label>
+        <input class="form-control" id="validationCustom03" type="text" name="username" [(ngModel)]="newUser.username" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"  for="validationCustom03">Nom</label>
+        <input class="form-control" id="validationCustom03" type="text" name="first_name" [(ngModel)]="newUser.first_name" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Prénom</label>
+        <input class="form-control" type="text" name="last_name" [(ngModel)]="newUser.last_name" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input class="form-control" type="text" name="email" [(ngModel)]="newUser.email" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Mot de passe</label>
+        <input class="form-control" type="password" name="password" [(ngModel)]="newUser.password" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Confirmer le mot de passe</label>
+        <input class="form-control" type="password" name="confPassword" required>
+      </div>
+
+      <div class="mt-4 d-flex gap-3 ">
+        <button class="btn btn-primary w-50" type="submit" (click)="closeDialog()">{{ selectedUser ? 'Modifier' : 'Ajouter' }}</button>
+        <a class="btn btn-outline-secondary w-50" (click)="closeDialog()">Annuler</a>
+      </div>
+
+    </form>
+
+  </div>
+
+</ng-template>

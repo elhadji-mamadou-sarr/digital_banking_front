@@ -1,0 +1,137 @@
+
+<app-dashboard></app-dashboard>
+
+<section class="dashboard" >
+
+  <div class="dash-content">
+        <div class="activity">
+
+          <div class="alert alert-danger" *ngIf="errorMessage">
+            <span> {{ errorMessage }}</span>
+          </div>
+
+          <div class="alert alert-success" *ngIf="succesMessage">
+            <span> {{ succesMessage }} </span>
+          </div>
+
+        <div class="title justify-content-between align-items-center">
+
+          <div class="d-flex">
+            <i class="uil uil-clock-three"></i>
+            <span class="text">Liste des comptes</span>
+          </div>
+
+          <form class="row g-3" (submit)="searchByAccountNumber()">
+            <div class="col-auto">
+              <input type="text" class="form-control" name="numero_compte" [(ngModel)]="searchTerm" placeholder="Filtre par numéro"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3">Filtrer</button>
+            </div>
+          </form>
+
+          <div class="button-add">
+            <a class="btn btn-primary fw-bold " (click)="openAddDialog(null)">+ Ajouter</a>
+          </div>
+
+        </div>
+
+        <div class="content">
+
+          <table class="table" >
+            <thead class="table-primary">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Client</th>
+                <th scope="col">Solde</th>
+                <th scope="col" class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let account of accounts">
+                <td>{{ account.numero_compte }}</td>
+                <td>{{ account.client}}</td>
+                <td>{{ account.solde }}</td>
+                <td>
+                  <div class="d-flex float-end gap-3">
+                    <a class="btn btn-outline-primary btn-sm" (click)="openDepositDialog('deposit', account.id)">Deposer</a>
+                    <a class="btn btn-outline-primary btn-sm" (click)="openDepositDialog('withdraw', account.id)">Retirer</a>
+                    <a class="btn btn-outline-primary btn-sm" (click)="deleteAccount(account.id!)" >supprimer</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+
+      </div>
+
+</div>
+</section>
+
+
+<ng-template #addDialog>
+
+  <div class="m-4">
+
+    <h2> {{ selectedAccount ? 'Modifier un compte' : 'Ajouter un compte' }}</h2>
+
+    <form (submit)="saveAccount()" class="row g-3" novalidate>
+
+      <input type="hidden" name="id" [(ngModel)]="newAccount.id">
+
+      <div class="col-md-6">
+        <label class="form-label">Nom d'utilisateur</label>
+        <select class="form-select" name="client" [(ngModel)]="newAccount.client" required>
+          <option *ngFor="let item of users" [ngValue]="item.id">
+            {{ item.first_name }} {{ item.username }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Numéro </label>
+        <input class="form-control" type="text" name="numero_compte" [(ngModel)]="newAccount.numero_compte"
+        onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
+      </div>
+
+
+      <div class="mt-4 d-flex gap-3 ">
+        <button class="btn btn-primary w-50" type="submit" (click)="closeDialog()">{{ selectedAccount ? 'Modifier' : 'Ajouter' }}</button>
+        <a class="btn btn-outline-secondary w-50" (click)="closeDialog()">Annuler</a>
+      </div>
+
+    </form>
+
+  </div>
+
+</ng-template>
+
+<ng-template #depositDialog>
+
+  <div class="m-4">
+
+    <h2> {{ transaction == 'deposit' ? "Vous allez faire un depot" : "Vous allez faire un retrait"}}</h2>
+
+    <form (submit)="saveOperation()" class="row g-3" novalidate>
+
+      <div class="col-md">
+        <label class="form-label" >Montant </label>
+        <input class="form-control" type="text" name="amount" [(ngModel)]="operation.amount"
+        onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
+      </div>
+
+
+      <div class="mt-4 d-flex gap-3 ">
+        <button class="btn btn-primary w-50" type="submit" (click)="closeDialog()">Valider</button>
+        <a class="btn btn-outline-secondary w-50" (click)="closeDialog()">Annuler</a>
+      </div>
+
+    </form>
+
+  </div>
+
+</ng-template>
