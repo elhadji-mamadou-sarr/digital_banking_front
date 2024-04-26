@@ -7,6 +7,11 @@ export interface User{
   password : string,
 }
 
+export interface Login{
+  username : string,
+  password : string,
+}
+
 export interface BankAccount{
   id : number,
   numero_compte : number,

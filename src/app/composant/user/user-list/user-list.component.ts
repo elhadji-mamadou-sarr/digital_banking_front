@@ -80,7 +80,7 @@ export class UserListComponent implements OnInit{
         this.userService.updateUser(this.selectedUser).subscribe({
           next:() => {
             this.succesMessage = 'L\'utilisateur mis à jour avec succès';
-            this.listUsers();
+            window.location.reload();
           },
           error: (err) => {
             this.errorMessage = 'Échec de la mise à jour de la User';
@@ -94,7 +94,7 @@ export class UserListComponent implements OnInit{
       this.userService.addUser(this.newUser).subscribe({
         next:() => {
           this.succesMessage = 'User ajouter avec succès';
-          this.listUsers();
+          window.location.reload();
         },
         error: (err) => {
           this.errorMessage = 'Échec de l\'ajout de la User';
